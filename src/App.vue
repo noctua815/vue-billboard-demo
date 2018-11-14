@@ -1,40 +1,52 @@
 <template>
-  <div class="hello">
-    <b-container>
-      <b-row class="justify-content-md-center">
-        <b-col cols="8">
-          <h1>Demo работы billboard.js</h1>
-        </b-col>
-      </b-row>
-      
-      <b-row class="justify-content-md-center">
-        <b-col cols="12">
-          <chart :dataArea="loadedData1" :dataLine="loadedData2" @selected="handlerClick"></chart>
-        </b-col>
-      </b-row>
-      
-      
-      <b-row>
-        <b-col cols="4">
-          <b-form-input v-model="selectedValue"
-                        type="text"
-                        :disabled="true"></b-form-input>
-        </b-col>
-        <b-col cols="4">
-          <b-button variant="primary" @click="updateAreaData">
-            Update area data
-          </b-button>
-        </b-col>
-        <b-col cols="4">
-          <b-button variant="primary" @click="updateLineData">
-            Update line data
-          </b-button>
-        </b-col>
-      </b-row>
-    </b-container>
-  
-  
-  </div>
+	<div class="chart-container">
+		<b-container>
+			<b-row class="justify-content-md-center">
+				<b-col cols="8">
+					<h1>Demo работы billboard.js</h1>
+				</b-col>
+			</b-row>
+			
+			<b-row class="justify-content-md-center">
+				<b-col cols="12">
+					<chart :dataArea="loadedData1" :dataLine="loadedData2" @selected="handlerClick"></chart>
+				</b-col>
+			</b-row>
+			
+			<div class="chart-actions">
+				<b-row>
+					<b-col cols="12" md="4">
+						<div class="chart-action">
+							<div class="chart-action__head">Выбранное значение:</div>
+							<div class="chart-action__body">
+								<b-form-input v-model="selectedValue" type="text" :disabled="true"></b-form-input>
+							</div>
+						</div>
+					
+					</b-col>
+					<b-col cols="12" md="6">
+						<div class="chart-action">
+							<div class="chart-action__head">Обновление данных графика. По нажатию формируется новый массив из 6
+								элементов (от 0 до 250) и обновляется выбранный тип графика.
+							</div>
+							<div class="chart-action__body">
+								<b-button variant="primary" @click="updateAreaData">
+									Update area
+								</b-button>
+								
+								
+								<b-button variant="primary" @click="updateLineData">
+									Update line
+								</b-button>
+							</div>
+						</div>
+					</b-col>
+				</b-row>
+			</div>
+		</b-container>
+	
+	
+	</div>
 </template>
 
 <script>
@@ -48,47 +60,76 @@
 		props: {},
 		data () {
 			return {
-				loadedData1: [30, 200, 100, 170, 150, 250],
-				loadedData2: [130, 100, 140, 35, 110, 50],
+				loadedData1: [],
+				loadedData2: [],
 				selectedValue: ''
 			}
 		},
+		
+		created () {
+			this.loadedData1 = this.generateData()
+			this.loadedData2 = this.generateData()
+		},
+		
 		methods: {
-			handlerClick(value) {
+			handlerClick (value) {
 				this.selectedValue = value
 			},
 			
-			updateAreaData() {
-				console.log(1)
-				console.log(this.generateData())
+			updateAreaData () {
 				this.loadedData1 = this.generateData()
-        this.$root.$emit('updateChart')
+				this.$root.$emit('updateChart')
 			},
 			
-			updateLineData() {
-				console.log(2)
+			updateLineData () {
 				this.loadedData2 = this.generateData()
 				this.$root.$emit('updateChart')
 			},
 			
-			generateData() {
-				return Array.from({length: 6}, () => Math.floor(Math.random() * 200))
+			generateData () {
+				return Array.from({length: 6}, () => Math.floor(Math.random() * 250))
 			}
 		}
 	}
 </script>
 
-<style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-  }
-  
-  .chart-container {
-    margin: 10vh 0;
-  }
+<style lang="scss">
+	#app {
+		font-family: 'Avenir', Helvetica, Arial, sans-serif;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		text-align: center;
+		color: #2c3e50;
+		margin-top: 60px;
+	}
+	
+	.chart-container {
+		margin: 10vh 0;
+		
+		h1 {
+			margin-bottom: 60px;
+		}
+	}
+	
+	.chart-actions {
+		margin: 50px 0;
+	}
+	
+	.chart-action {
+		margin-bottom: 16px;
+		
+		&__head {
+			margin-bottom: 16px;
+			font-size: 16px;
+		}
+		
+		&__body {
+			display: flex;
+			flex-wrap: wrap;
+			
+			.btn {
+				margin: 0 16px 16px 0;
+			}
+		}
+	}
 </style>
