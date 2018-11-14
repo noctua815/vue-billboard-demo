@@ -2,7 +2,7 @@
 	<div class="chart-container">
 		<b-container>
 			<b-row class="justify-content-md-center">
-				<b-col cols="8">
+				<b-col cols="12 text-center" md="8">
 					<h1>Demo работы billboard.js</h1>
 				</b-col>
 			</b-row>
